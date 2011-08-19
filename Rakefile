@@ -2,6 +2,7 @@ require 'rubygems'
 require 'bundler'
 require 'rspec/core/rake_task'
 require "rake/rdoctask"
+require 'metric_fu'
 
 Bundler::GemHelper.install_tasks
 

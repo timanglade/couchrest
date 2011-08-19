@@ -141,13 +141,13 @@ module CouchRest
       if (opts.delete(:raw) || doc.nil? || doc.is_a?(IO) || doc.is_a?(Tempfile))
         doc
       else
-        MultiJson.encode(doc.respond_to?(:as_couch_json) ? doc.as_couch_json : doc)
+        MessagePack::pack(doc.respond_to?(:as_couch_json) ? doc.as_couch_json : doc)
       end
     end
 
     # Parse the response provided.
     def parse_response(result, opts = {})
-      (opts.delete(:raw) || opts.delete(:head)) ? result : MultiJson.decode(result, opts.update(:max_nesting => false))
+      (opts.delete(:raw) || opts.delete(:head)) ? result : MessagePack::unpack(result)
     end
 
     # An array of all the options that should be passed through to restclient.

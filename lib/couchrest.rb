@@ -14,7 +14,7 @@
 
 require 'rest_client'
 require 'multi_json'
-
+require 'msgpack'
 # Not sure why this is required, so removed until a reason is found!
 $:.unshift File.dirname(__FILE__) unless
  $:.include?(File.dirname(__FILE__)) ||
@@ -111,7 +111,7 @@ module CouchRest
     def paramify_url url, params = {}
       if params && !params.empty?
         query = params.collect do |k,v|
-          v = MultiJson.encode(v) if %w{key startkey endkey}.include?(k.to_s)
+          v = MessagePack::pack(v) if %w{key startkey endkey}.include?(k.to_s)
           "#{k}=#{CGI.escape(v.to_s)}"
         end.join("&")
         url = "#{url}?#{query}"
